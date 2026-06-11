@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roda da Vida | @psi_liviamelo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400;700&display=swap');
+
+:root {
+  --navy: #1a2e4a;
+  --gold: #b8922a;
+  --gold-light: #d4a940;
+  --white: #ffffff;
+  --cream: #faf8f4;
+  --gray: #e8e4dc;
+  --text: #2c2c2c;
+  --text-light: #6b6259;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--cream);
+  font-family: 'Lato', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* STEP SYSTEM */
+.step { display: none; }
+.step.active { display: block; }
+
+/* ===== STEP 1: IDENTIFICAÇÃO ===== */
+#step1 {
+  min-height: 100vh;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+#step1.active { display: flex; }
+
+.id-card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(26,46,74,0.12);
+  padding: 48px 40px;
+  max-width: 480px;
+  width: 100%;
+}
+
+.logo-area {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.logo-tag {
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.logo-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2.6rem;
+  color: var(--navy);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.logo-divider {
+  width: 48px;
+  height: 2px;
+  background: var(--gold);
+  margin: 14px auto;
+}
+
+.logo-sub {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  letter-spacing: 0.08em;
+}
+
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+
+.field-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--gray);
+  border-radius: 6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.field-input:focus { border-color: var(--gold); background: var(--white); }
+
+.field-row { display: flex; gap: 16px; }
+.field-row .field-group { flex: 1; }
+
+.btn-start {
+  width: 100%;
+  padding: 14px;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.btn-start:hover { background: #253d5e; }
+
+.instruction-box {
+  background: #f0ede6;
+  border-left: 3px solid var(--gold);
+  padding: 12px 14px;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.78rem;
+  color: var(--navy);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ===== STEP 2: RODA ===== */
+#step2 {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px 48px;
+}
+#step2.active { display: flex; }
+
+.step2-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.step2-header .tag {
+  font-size: 0.68rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.step2-header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--navy);
+  font-weight: 600;
+}
+.patient-banner {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+.patient-banner span { color: var(--navy); font-weight: 700; }
+
+.progress-bar-wrap {
+  width: 100%;
+  max-width: 560px;
+  margin-bottom: 20px;
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-light);
+  margin-bottom: 5px;
+}
+.progress-track {
+  height: 4px;
+  background: var(--gray);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.wheel-layout {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 920px;
+}
+
+canvas {
+  display: block;
+  cursor: crosshair;
+  border-radius: 50%;
+  box-shadow: 0 8px 40px rgba(26,46,74,0.15);
+  touch-action: none;
+}
+
+.side-panel {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 20px 18px;
+  min-width: 230px;
+  max-width: 260px;
+  box-shadow: 0 4px 20px rgba(26,46,74,0.08);
+}
+
+.panel-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--navy);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gray);
+}
+
+.score-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+  font-size: 0.78rem;
+}
+.score-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.score-label { flex: 1; color: var(--navy); }
+.score-bar-bg {
+  width: 56px; height: 4px;
+  background: var(--gray);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.score-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 20px;
+  text-align: right;
+}
+
+.avg-box {
+  text-align: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray);
+}
+.avg-lbl { font-size: 0.68rem; color: var(--text-light); letter-spacing: 0.1em; text-transform: uppercase; }
+.avg-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.1;
+}
+
+.btn-finish {
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px;
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-finish:hover { background: var(--gold-light); }
+.btn-finish:disabled { background: #ccc; cursor: not-allowed; }
+
+.btn-reset {
+  width: 100%;
+  margin-top: 8px;
+  padding: 9px;
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--gray);
+  border-radius: 6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-reset:hover { border-color: var(--navy); }
+
+.canvas-tip {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* ===== STEP 3: RESUMO ===== */
+#step3 {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 16px 56px;
+}
+#step3.active { display: flex; }
+
+.resumo-card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(26,46,74,0.12);
+  padding: 40px 36px;
+  max-width: 720px;
+  width: 100%;
+}
+
+.resumo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--gold);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.resumo-title-group .tag {
+  font-size: 0.68rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.resumo-title-group h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.resumo-meta {
+  text-align: right;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.8;
+}
+.resumo-meta strong { color: var(--navy); display: block; font-size: 0.9rem; }
+
+.resumo-body {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.resumo-wheel { flex-shrink: 0; }
+
+.resumo-scores { flex: 1; min-width: 220px; }
+
+.resumo-scores h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.resumo-score-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+}
+.resumo-score-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.resumo-score-name { flex: 1; color: var(--text); }
+.resumo-score-bar-bg { width: 80px; height: 5px; background: var(--gray); border-radius: 3px; overflow: hidden; }
+.resumo-score-bar-fill { height: 100%; border-radius: 3px; }
+.resumo-score-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: right;
+}
+
+.resumo-avg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray);
+}
+.resumo-avg-label {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+.resumo-avg-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.resumo-obs {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--gray);
+}
+.resumo-obs label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.resumo-obs textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--gray);
+  border-radius: 6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--cream);
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.resumo-obs textarea:focus { border-color: var(--gold); background: var(--white); }
+
+.resumo-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.btn-print {
+  flex: 1;
+  padding: 12px;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-print:hover { background: #253d5e; }
+
+.btn-back {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--navy);
+  border-radius: 6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-back:hover { background: var(--navy); color: var(--white); }
+
+.resumo-footer {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 0.68rem;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+/* PRINT */
+@media print {
+  body { background: white; }
+  #step1, #step2 { display: none !important; }
+  #step3 { display: flex !important; padding: 0; }
+  .resumo-actions, .resumo-obs { display: none; }
+  .resumo-card { box-shadow: none; padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- STEP 1: IDENTIFICAÇÃO -->
+<div id="step1" class="step active">
+  <div class="id-card">
+    <div class="logo-area">
+      <div class="logo-tag">Avaliação Psicológica</div>
+      <div class="logo-title">Roda da Vida</div>
+      <div class="logo-divider"></div>
+      <div class="logo-sub">Psi. Lívia Melo | CRP 11-04802</div>
+    </div>
+
+    <div class="instruction-box">
+      Preencha seus dados abaixo para iniciar. Em seguida, você avaliará seu nível de satisfação em 10 áreas essenciais da vida, de <strong>1</strong> (completamente insatisfeito) a <strong>10</strong> (completamente satisfeito).
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="inputNome">Nome completo</label>
+      <input class="field-input" id="inputNome" type="text" placeholder="Digite seu nome" autocomplete="name">
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="inputData">Data de aplicação</label>
+        <input class="field-input" id="inputData" type="date">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="inputIdade">Idade</label>
+        <input class="field-input" id="inputIdade" type="number" placeholder="Anos" min="1" max="120">
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="goToWheel()">Iniciar avaliação</button>
+  </div>
+</div>
+
+<!-- STEP 2: RODA INTERATIVA -->
+<div id="step2" class="step">
+  <div class="step2-header">
+    <div class="tag">Avaliação Psicológica</div>
+    <h1>Roda da Vida</h1>
+    <div class="patient-banner" id="patientBanner"></div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-label">
+      <span>Áreas preenchidas</span>
+      <span id="progressText">0 de 10</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="wheel-layout">
+    <div>
+      <canvas id="wheelCanvas" width="460" height="460"></canvas>
+      <div class="canvas-tip">Clique no eixo para definir a pontuação. Arraste para ajustar.</div>
+    </div>
+
+    <div class="side-panel">
+      <div class="panel-title">Pontuações</div>
+      <div id="scoresList"></div>
+      <div class="avg-box">
+        <div class="avg-lbl">Média Geral</div>
+        <div class="avg-num" id="avgDisplay">—</div>
+      </div>
+      <button class="btn-finish" id="btnFinish" onclick="goToResumo()" disabled>
+        Ver Resumo Completo
+      </button>
+      <button class="btn-reset" onclick="resetAll()">Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: RESUMO FINAL -->
+<div id="step3" class="step">
+  <div class="resumo-card">
+    <div class="resumo-header">
+      <div class="resumo-title-group">
+        <div class="tag">Resultado</div>
+        <h2>Roda da Vida</h2>
+      </div>
+      <div class="resumo-meta" id="resumoMeta"></div>
+    </div>
+
+    <div class="resumo-body">
+      <div class="resumo-wheel">
+        <canvas id="resumoCanvas" width="280" height="280"></canvas>
+      </div>
+      <div class="resumo-scores">
+        <h3>Pontuação por área</h3>
+        <div id="resumoScoresList"></div>
+        <div class="resumo-avg-row">
+          <span class="resumo-avg-label">Média Geral</span>
+          <span class="resumo-avg-val" id="resumoAvg"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="resumo-obs">
+      <label>Observações pessoais (opcional)</label>
+      <textarea placeholder="Escreva aqui reflexões, percepções ou o que chamou sua atenção ao preencher a roda..."></textarea>
+    </div>
+
+    <div class="resumo-actions">
+      <button class="btn-back" onclick="voltarRoda()">Editar respostas</button>
+      <button class="btn-print" onclick="window.print()">Imprimir / Salvar PDF</button>
+    </div>
+
+    <div class="resumo-footer">@psi_liviamelo | CRP 11-04802 | Doc: ACT01 v001</div>
+  </div>
+</div>
+
+<script>
+// DATA
+const areas = [
+  { name: 'Saúde',          color: '#c0392b' },
+  { name: 'Família',        color: '#e67e22' },
+  { name: 'Relacionamento', color: '#f1a307' },
+  { name: 'Finanças',       color: '#27ae60' },
+  { name: 'Carreira',       color: '#16a085' },
+  { name: 'Estudos',        color: '#2980b9' },
+  { name: 'Vida Social',    color: '#8e44ad' },
+  { name: 'Lazer',          color: '#e84393' },
+  { name: 'Espiritualidade',color: '#1a2e4a' },
+  { name: 'Propósito',      color: '#b8922a' }
+];
+
+let scores = new Array(10).fill(0);
+let dragging = false;
+let patientName = '';
+let patientDate = '';
+let patientAge = '';
+
+// STEP NAVIGATION
+function showStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goToWheel() {
+  const nome = document.getElementById('inputNome').value.trim();
+  const data = document.getElementById('inputData').value;
+  const idade = document.getElementById('inputIdade').value.trim();
+
+  if (!nome) {
+    document.getElementById('inputNome').focus();
+    document.getElementById('inputNome').style.borderColor = '#c0392b';
+    return;
+  }
+  document.getElementById('inputNome').style.borderColor = '';
+
+  patientName = nome;
+  patientAge = idade;
+
+  if (data) {
+    const [y, m, d] = data.split('-');
+    patientDate = `${d}/${m}/${y}`;
+  } else {
+    const now = new Date();
+    patientDate = now.toLocaleDateString('pt-BR');
+  }
+
+  document.getElementById('patientBanner').innerHTML =
+    `Paciente: <span>${patientName}</span> &nbsp;|&nbsp; Data: <span>${patientDate}</span>${patientAge ? ' &nbsp;|&nbsp; Idade: <span>' + patientAge + ' anos</span>' : ''}`;
+
+  showStep('step2');
+  setTimeout(() => { drawWheel(); updatePanel(); }, 50);
+}
+
+function goToResumo() {
+  showStep('step3');
+  buildResumo();
+}
+
+function voltarRoda() {
+  showStep('step2');
+  setTimeout(() => { drawWheel(); updatePanel(); }, 50);
+}
+
+// WHEEL
+const W = 460, H = 460, cx = 230, cy = 230, maxR = 186, N = 10;
+
+function angle(i) { return (i / N) * 2 * Math.PI - Math.PI / 2; }
+
+function drawWheel() {
+  const canvas = document.getElementById('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  renderWheel(ctx, cx, cy, maxR, 460);
+}
+
+function renderWheel(ctx, CX, CY, MR, SIZE) {
+  // BG
+  ctx.beginPath();
+  ctx.arc(CX, CY, MR + 12, 0, 2 * Math.PI);
+  ctx.fillStyle = '#f5f3ef';
+  ctx.fill();
+
+  // Grid rings
+  for (let g = 1; g <= 10; g++) {
+    const r = (g / 10) * MR;
+    ctx.beginPath();
+    ctx.arc(CX, CY, r, 0, 2 * Math.PI);
+    ctx.strokeStyle = g === 10 ? '#1a2e4a' : (g % 2 === 0 ? '#d5d0c8' : '#e8e4dc');
+    ctx.lineWidth = g === 10 ? 1.5 : 0.8;
+    ctx.stroke();
+    if (g % 2 === 0 && g < 10 && SIZE > 300) {
+      ctx.fillStyle = '#b0ab9f';
+      ctx.font = `${SIZE > 400 ? 8 : 7}px Lato, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(g, CX + r + 7, CY + 3);
+    }
+  }
+
+  // Dividers
+  for (let i = 0; i < N; i++) {
+    const a = angle(i);
+    ctx.beginPath();
+    ctx.moveTo(CX, CY);
+    ctx.lineTo(CX + Math.cos(a) * MR, CY + Math.sin(a) * MR);
+    ctx.strokeStyle = '#ccc8c0';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Filled polygon
+  const anyFilled = scores.some(s => s > 0);
+  if (anyFilled) {
+    ctx.beginPath();
+    for (let i = 0; i < N; i++) {
+      const a = angle(i);
+      const r = (scores[i] / 10) * MR;
+      const x = CX + Math.cos(a) * r;
+      const y = CY + Math.sin(a) * r;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(184,146,42,0.22)';
+    ctx.fill();
+    ctx.strokeStyle = '#b8922a';
+    ctx.lineWidth = SIZE > 300 ? 2.5 : 1.5;
+    ctx.stroke();
+  }
+
+  // Dots
+  for (let i = 0; i < N; i++) {
+    if (scores[i] > 0) {
+      const a = angle(i);
+      const r = (scores[i] / 10) * MR;
+      ctx.beginPath();
+      ctx.arc(CX + Math.cos(a) * r, CY + Math.sin(a) * r, SIZE > 300 ? 6 : 4, 0, 2 * Math.PI);
+      ctx.fillStyle = areas[i].color;
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  }
+
+  // Score numbers on axis
+  if (SIZE > 300) {
+    for (let i = 0; i < N; i++) {
+      if (scores[i] > 0) {
+        const a = angle(i);
+        const r = (scores[i] / 10) * MR;
+        const nx = CX + Math.cos(a) * (r + 14);
+        const ny = CY + Math.sin(a) * (r + 14);
+        ctx.fillStyle = areas[i].color;
+        ctx.font = 'bold 11px Lato, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(scores[i], nx, ny + 4);
+      }
+    }
+  }
+
+  // Labels
+  const labelR = MR + (SIZE > 300 ? 30 : 20);
+  for (let i = 0; i < N; i++) {
+    const a = angle(i);
+    const lx = CX + Math.cos(a) * labelR;
+    const ly = CY + Math.sin(a) * labelR;
+    ctx.save();
+    ctx.translate(lx, ly);
+    let ta = a + Math.PI / 2;
+    if (lx < CX) ta += Math.PI;
+    ctx.rotate(ta);
+    ctx.fillStyle = '#1a2e4a';
+    ctx.font = `bold ${SIZE > 300 ? 10.5 : 7.5}px Lato, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(areas[i].name, 0, 0);
+    ctx.restore();
+  }
+
+  // Center
+  ctx.beginPath();
+  ctx.arc(CX, CY, 4, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a2e4a';
+  ctx.fill();
+}
+
+function getArea(mx, my) {
+  const dx = mx - cx, dy = my - cy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  if (dist > maxR + 20 || dist < 6) return { area: -1, score: 0 };
+  let a = Math.atan2(dy, dx) + Math.PI / 2;
+  if (a < 0) a += 2 * Math.PI;
+  const sector = Math.round(a / (2 * Math.PI / N)) % N;
+  const score = Math.min(10, Math.max(1, Math.round((dist / maxR) * 10)));
+  return { area: sector, score };
+}
+
+function handleInput(mx, my) {
+  const { area, score } = getArea(mx, my);
+  if (area >= 0) { scores[area] = score; drawWheel(); updatePanel(); }
+}
+
+const wc = document.getElementById('wheelCanvas');
+wc.addEventListener('mousedown', e => { dragging = true; handleInput(e.offsetX, e.offsetY); });
+wc.addEventListener('mousemove', e => { if (dragging) handleInput(e.offsetX, e.offsetY); });
+wc.addEventListener('mouseup', () => dragging = false);
+wc.addEventListener('mouseleave', () => dragging = false);
+wc.addEventListener('touchstart', e => {
+  e.preventDefault(); dragging = true;
+  const r = wc.getBoundingClientRect(), t = e.touches[0];
+  handleInput(t.clientX - r.left, t.clientY - r.top);
+}, { passive: false });
+wc.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (!dragging) return;
+  const r = wc.getBoundingClientRect(), t = e.touches[0];
+  handleInput(t.clientX - r.left, t.clientY - r.top);
+}, { passive: false });
+wc.addEventListener('touchend', () => dragging = false);
+
+function updatePanel() {
+  const list = document.getElementById('scoresList');
+  list.innerHTML = '';
+  let total = 0, count = 0;
+  areas.forEach((a, i) => {
+    const s = scores[i];
+    if (s > 0) { total += s; count++; }
+    const el = document.createElement('div');
+    el.className = 'score-item';
+    el.innerHTML = `
+      <div class="score-dot" style="background:${a.color}"></div>
+      <span class="score-label">${a.name}</span>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:${s*10}%;background:${a.color}"></div></div>
+      <span class="score-value">${s > 0 ? s : '—'}</span>`;
+    list.appendChild(el);
+  });
+  const avg = count > 0 ? (total / count).toFixed(1) : '—';
+  document.getElementById('avgDisplay').textContent = avg;
+
+  const filled = scores.filter(s => s > 0).length;
+  document.getElementById('progressText').textContent = `${filled} de 10`;
+  document.getElementById('progressFill').style.width = (filled / 10 * 100) + '%';
+  document.getElementById('btnFinish').disabled = filled < 10;
+}
+
+function resetAll() {
+  scores = new Array(10).fill(0);
+  drawWheel();
+  updatePanel();
+}
+
+// RESUMO
+function buildResumo() {
+  // Meta
+  document.getElementById('resumoMeta').innerHTML =
+    `<strong>${patientName}</strong>
+     Data: ${patientDate}${patientAge ? '<br>Idade: ' + patientAge + ' anos' : ''}`;
+
+  // Mini wheel
+  const rc = document.getElementById('resumoCanvas');
+  const rctx = rc.getContext('2d');
+  rctx.clearRect(0, 0, 280, 280);
+  renderWheel(rctx, 140, 140, 118, 280);
+
+  // Scores list
+  const sl = document.getElementById('resumoScoresList');
+  sl.innerHTML = '';
+  let total = 0;
+  areas.forEach((a, i) => {
+    const s = scores[i];
+    total += s;
+    const el = document.createElement('div');
+    el.className = 'resumo-score-row';
+    el.innerHTML = `
+      <div class="resumo-score-dot" style="background:${a.color}"></div>
+      <span class="resumo-score-name">${a.name}</span>
+      <div class="resumo-score-bar-bg"><div class="resumo-score-bar-fill" style="width:${s*10}%;background:${a.color}"></div></div>
+      <span class="resumo-score-num" style="color:${a.color}">${s}</span>`;
+    sl.appendChild(el);
+  });
+
+  const avg = (total / 10).toFixed(1);
+  document.getElementById('resumoAvg').textContent = avg;
+}
+
+// Set today's date as default
+document.getElementById('inputData').valueAsDate = new Date();
+</script>
+</body>
+</html>
